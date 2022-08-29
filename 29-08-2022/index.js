@@ -1,36 +1,26 @@
-const path = require("path");
-const os = require("os");
+const EventEmitter = require("events");
 
-// add "\r\n" End of line
-const EOL = os.EOL;
+class MyEmitter extends EventEmitter {}
 
-// get dirname
-console.log(EOL, __dirname, EOL);
+const myEmitter = new MyEmitter();
 
-// get full directory with filename
-console.log(__filename, EOL);
+myEmitter.on("some-event", () => {
+  console.log("an event occurred");
+});
 
-exports.sad = () => {
-  console.log("");
-};
+myEmitter.emit("some-event");
 
-// console.log(module.exports);
+setTimeout(() => {
+  console.log("time out");
+}, 0000);
 
-// only give file name //! for consistant results add path.win2.basename on all OS
-console.log(path.basename(__filename), EOL);
-console.log(path.basename(__filename, ".js"), EOL); // gives only "index" slices ".js"
+// after all operations done run
+setImmediate(() => {
+  console.log("this runs last");
+});
 
-// gives directory of the spicified file
-console.log(path.dirname(__filename), EOL);
-
-// gives extension of the spicified file
-console.log(path.extname(__filename), EOL);
-
-// givesobject form of path
-console.log(path.parse(__filename), EOL);
-
-// file seperator
-console.log(__filename.split(path.sep), EOL);
-
-// joins path
-console.log(path.join("fasd", "asdasd"));
+let count = 5;
+while (count != 0) {
+  console.log("this happens ");
+  count--;
+}
