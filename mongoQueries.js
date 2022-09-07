@@ -79,3 +79,10 @@ db.books.updateOne(
   { _id: ObjectId("asdasdasd") },
   { $inc: { rating: 1, pages: -1 } }
 );
+
+//? use $push $pull to add or remove element from array
+//? use $each - to add more than 1 elemetns
+db.books.updateOne(
+  { _id: ObjectId("asdasdasd") },
+  { $push: { generes: { $each: ["action", "hindi"] } } }
+);
