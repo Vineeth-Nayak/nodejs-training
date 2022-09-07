@@ -51,3 +51,14 @@ db.books.find({ genres: "fantasy" });
 // !find array element containing "exactly" the specified element
 db.books.find({ genres: ["fantasy"] });
 db.books.find({ genres: ["fantasy", "sci-fi"] });
+
+// *------------------------------------------------------
+// ? DELETING DOCUMENTS
+// ! delete by id
+db.books.deleteOne({ _id: ObjectId("asdasdadasdsadasd") });
+
+// ! delete many by some criteria
+db.books.deleteMany({ author: "heludilla" });
+
+// *------------------------------------------------------
+// ? UPDATE DOCUMENTS
