@@ -62,3 +62,20 @@ db.books.deleteMany({ author: "heludilla" });
 
 // *------------------------------------------------------
 // ? UPDATE DOCUMENTS
+// ! update single document
+db.books.updateOne(
+  { _id: ObjectId("asdasdasd") },
+  { $set: { rating: 8, pages: 120 } }
+);
+
+// ! update many document
+db.books.updateMany(
+  { author: "Terry cruse" },
+  { $set: { author: "Terri manga" } }
+);
+
+// ! increment by 1 both rating and reduce pages by 1
+db.books.updateOne(
+  { _id: ObjectId("asdasdasd") },
+  { $inc: { rating: 1, pages: -1 } }
+);
