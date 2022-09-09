@@ -6,13 +6,14 @@ const userSchema = new Schema({
   dateOfBirth: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true, minLength: 8 },
+  age: { type: Number },
   address: [
     {
       type: String,
       required: true,
       validate: {
         validator: function () {
-          console.log(this.address.length, "asdasdasdasdasdasdsdasd");
+          console.log(this.address.length, "asdasdasdasdasdasdsdasd ");
           return !(this.address.length > 5);
         },
         message: (props) => `${props.value} exceeds maximum array size (10)!`,

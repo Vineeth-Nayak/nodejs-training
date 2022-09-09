@@ -3,7 +3,8 @@ const User = require("./User");
 
 mongoose.connect("mongodb://localhost/task1");
 
-run();
+// run();
+getAge();
 
 async function run() {
   try {
@@ -12,6 +13,7 @@ async function run() {
       dateOfBirth: "12/01/2001",
       email: "vin@gmail.com",
       password: "123123123",
+      age: 20,
       address: [
         "asdasd asdasd asdasd",
         "asdasd asdasd asdasd",
@@ -42,5 +44,14 @@ async function addAddress(_id) {
     );
   } catch (error) {
     console.log("Error has occured from addAddress", error);
+  }
+}
+
+async function getAge() {
+  try {
+    const result = await User.find({ name: /^sandesh/ });
+    console.log(result);
+  } catch (error) {
+    console.log("error");
   }
 }
