@@ -25,11 +25,16 @@ router.post("/update", async (req, res) => {
     if (!req.body) return;
     // const _id = "631edf4bf4a2972bbde5c038";
     const { _id, name, email, password, age } = req.body;
-    console.log(name, email, password, age);
+    // console.log(name, email, password, age);
+
+    if ((name == "") | (email == "") | (password == "") | (age == ""))
+      res.send("Don't send empty values");
+
     const result = await User.findByIdAndUpdate(
       { _id },
       { name, email, password, age }
     );
+
     res.send(result);
   } catch (error) {
     console.log("error", error.name);
