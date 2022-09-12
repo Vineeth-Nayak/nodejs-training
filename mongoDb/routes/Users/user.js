@@ -16,6 +16,20 @@ router.post("/addUser", async (req, res) => {
     }
   } catch (error) {
     console.log(error.name);
+    res.send("Error occured").status(500);
+  }
+});
+
+router.post("/update", async (req, res) => {
+  try {
+    if(!req.body) return
+
+    const {name,email,password,age,address} =req.body
+    if(name )
+
+  } catch (error) {
+    console.log("error", error.name);
+    res.send("error occured").status(500);
   }
 });
 

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   name: { type: String, required: true },
-  dateOfBirth: { type: Date, required: true },
+  dateOfBirth: { type: Date, default: Date.now(), required: true },
   email: { type: String, required: true },
   password: { type: String, required: true, minLength: 8 },
   age: { type: Number, required: true },

@@ -15,6 +15,8 @@ router.use(express.json());
 databaseConnect();
 
 app.use("/", router);
-app.use("api/user", userRouter);
-
+app.use("/api/user", userRouter);
+app.get("/", (req, res) => {
+  res.send("HLE");
+});
 app.listen(port, () => console.log("Running port", port));
