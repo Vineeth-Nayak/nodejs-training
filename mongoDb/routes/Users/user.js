@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User } = require("../../models/index");
+const { User, Salary } = require("../../models/index");
 
 router.post("/addUser", async (req, res) => {
   try {
@@ -51,11 +51,11 @@ router.put("/update", async (req, res) => {
 router.delete("/deleteRecord", async (req, res) => {
   try {
     if (!req.body) res.send("Send Body");
-    const { _id, name, email, password, age } = req.body;
+    const { _id } = req.body;
 
-    User.findByIdAndDelete({ _id },(err,docs)=>{
-        if(err)res.send("err.name)
-
+    User.findByIdAndDelete({ _id }, (err, docs) => {
+      if (err) res.send(err.name);
+      res.send(docs);
     });
   } catch (error) {
     console.log("deleteRecord", error.name);
@@ -63,4 +63,19 @@ router.delete("/deleteRecord", async (req, res) => {
   }
 });
 
+router.post("/creditSalary", async (req, res) => {
+  try {
+    if (!req.body) res.send("Send Body");
+    const { userId, salaryCredit, month } = req.body;
+    console.log(req.body);
+    const salary = new Salary({ userId, salaryCredit, month });
+
+    const result = await salary.save();
+
+    res.send(result);
+  } catch (error) {
+    console.log("creditSalary", error.name);
+    res.send("error occured").status(500);
+  }
+});
 module.exports = router;
