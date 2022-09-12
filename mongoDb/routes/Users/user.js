@@ -20,14 +20,20 @@ router.post("/addUser", async (req, res) => {
   }
 });
 
-router.post("/update", async (req, res) => {
+router.put("/update", async (req, res) => {
   try {
     if (!req.body) return;
     // const _id = "631edf4bf4a2972bbde5c038";
     const { _id, name, email, password, age } = req.body;
     // console.log(name, email, password, age);
 
-    if ((name == "") | (email == "") | (password == "") | (age == ""))
+    if (
+      (name == "") |
+      (email == "") |
+      (password == "") |
+      (age == "") |
+      (_id == "")
+    )
       res.send("Don't send empty values");
 
     const result = await User.findByIdAndUpdate(
@@ -38,6 +44,21 @@ router.post("/update", async (req, res) => {
     res.send(result);
   } catch (error) {
     console.log("error", error.name);
+    res.send("error occured").status(500);
+  }
+});
+
+router.delete("/deleteRecord", async (req, res) => {
+  try {
+    if (!req.body) res.send("Send Body");
+    const { _id, name, email, password, age } = req.body;
+
+    User.findByIdAndDelete({ _id },(err,docs)=>{
+        if(err)res.send("err.name)
+
+    });
+  } catch (error) {
+    console.log("deleteRecord", error.name);
     res.send("error occured").status(500);
   }
 });
