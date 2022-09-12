@@ -10,7 +10,7 @@ router.post("/addUser", async (req, res) => {
     const result = await user.save();
 
     if (result) {
-      res.send("User Added");
+      res.send(result);
     } else {
       res.send("Something went wrong ");
     }
@@ -22,11 +22,15 @@ router.post("/addUser", async (req, res) => {
 
 router.post("/update", async (req, res) => {
   try {
-    if(!req.body) return
-
-    const {name,email,password,age,address} =req.body
-    if(name )
-
+    if (!req.body) return;
+    // const _id = "631edf4bf4a2972bbde5c038";
+    const { _id, name, email, password, age } = req.body;
+    console.log(name, email, password, age);
+    const result = await User.findByIdAndUpdate(
+      { _id },
+      { name, email, password, age }
+    );
+    res.send(result);
   } catch (error) {
     console.log("error", error.name);
     res.send("error occured").status(500);
