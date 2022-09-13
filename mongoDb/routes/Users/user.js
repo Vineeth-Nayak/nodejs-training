@@ -78,4 +78,17 @@ router.post("/creditSalary", async (req, res) => {
     res.send("error occured").status(500);
   }
 });
+
+router.get("/getSalary", (req, res) => {
+  try {
+    if (!req.body) res.send("Send Body");
+    const { userId } = req.body;
+    console.log(req.body);
+    const result = Salary.findOne({ _id: userId }).populate("userId");
+    res.json(result);
+  } catch (error) {
+    console.log("creditSalary", error);
+    res.send("error occured").status(500);
+  }
+});
 module.exports = router;
