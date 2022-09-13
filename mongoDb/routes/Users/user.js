@@ -79,12 +79,14 @@ router.post("/creditSalary", async (req, res) => {
   }
 });
 
-router.get("/getSalary", (req, res) => {
+router.get("/getSalary", async (req, res) => {
   try {
     if (!req.body) res.send("Send Body");
-    const { userId } = req.body;
+    const { salaryId } = req.body;
     console.log(req.body);
-    const result = Salary.findOne({ _id: userId }).populate("userId");
+    const result = await Salary.findOne({ _id: salaryId })
+      .select({ salaryCredit: 1, month: 1 })
+      .populate("userId", { name: 1 });
     res.json(result);
   } catch (error) {
     console.log("creditSalary", error);
