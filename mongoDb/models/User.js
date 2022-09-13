@@ -7,15 +7,22 @@ const userSchema = new Schema({
   email: { type: String, required: true },
   password: { type: String, required: true, minLength: 8 },
   age: { type: Number, required: true },
-  address: [
+  // address: [
+  //   {
+  //     type: String,
+  //     required: true,
+  //     validate: {
+  //       validator: function () {
+  //         return !(this.address.length > 5);
+  //       },
+  //       message: (props) => `${props.value} exceeds maximum array size (5)!`,
+  //     },
+  //   },
+  // ],
+  addresses: [
     {
-      type: String,
-      required: true,
-      validate: {
-        validator: function () {
-          return !(this.address.length > 5);
-        },
-        message: (props) => `${props.value} exceeds maximum array size (10)!`,
+      address: {
+        type: String,
       },
     },
   ],

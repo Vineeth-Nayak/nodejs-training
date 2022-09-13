@@ -6,7 +6,14 @@ router.post("/addUser", async (req, res) => {
   try {
     if (!req.body) return;
     const { name, dateOfBirth, email, password, age, address } = req.body;
-    const user = new User({ name, dateOfBirth, email, password, age, address });
+    const user = new User({
+      name,
+      dateOfBirth,
+      email,
+      password,
+      age,
+      addresses: { address },
+    });
     const result = await user.save();
 
     if (result) {
@@ -14,6 +21,22 @@ router.post("/addUser", async (req, res) => {
     } else {
       res.send("Something went wrong ");
     }
+  } catch (error) {
+    console.log(error.name);
+    res.send("Error occured").status(500);
+  }
+});
+
+router.put("/addAddress", async (req, res) => {
+  try {
+    if (!req.body) return;
+    const { address, userId } = req.body;
+    User.findByIdAndUpdate(
+      { _id: userId },
+      { $push: { addresses: { address } } }
+    ).exec((err, docs) => {
+      res.send(docs);
+    });
   } catch (error) {
     console.log(error.name);
     res.send("Error occured").status(500);
@@ -108,6 +131,16 @@ router.get("/salary", async (req, res) => {
       .select({ salaryCredit: 1, month: 1 })
       .populate("userId", { name: 1 });
     res.json(result);
+  } catch (error) {
+    console.log("creditSalary", error);
+    res.send("error occured").status(500);
+  }
+});
+
+router.get("/aggregateExample", async (req, res) => {
+  try {
+    if (!req.body) res.send("Send Body");
+    // const {}
   } catch (error) {
     console.log("creditSalary", error);
     res.send("error occured").status(500);
