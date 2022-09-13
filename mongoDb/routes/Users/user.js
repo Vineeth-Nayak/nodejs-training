@@ -93,4 +93,24 @@ router.get("/getSalary", async (req, res) => {
     res.send("error occured").status(500);
   }
 });
+
+router.get("/salary", async (req, res) => {
+  try {
+    if (!req.body) res.send("Send Body");
+    const { salaryCondition, monthCondition } = req.body;
+    console.log(req.body);
+    const result = await Salary.find({
+      $and: [
+        { salaryCredit: { $gt: salaryCondition } },
+        { month: { $lt: monthCondition } },
+      ],
+    })
+      .select({ salaryCredit: 1, month: 1 })
+      .populate("userId", { name: 1 });
+    res.json(result);
+  } catch (error) {
+    console.log("creditSalary", error);
+    res.send("error occured").status(500);
+  }
+});
 module.exports = router;
