@@ -19,13 +19,15 @@ const userSchema = new Schema({
   //     },
   //   },
   // ],
-  addresses: [
-    {
-      address: {
-        type: String,
+  addresses: {
+    type: [
+      {
+        address: {
+          type: String,
+        },
       },
-    },
-  ],
+    ],
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -33,10 +33,53 @@ router.put("/addAddress", async (req, res) => {
     const { address, userId } = req.body;
     User.findByIdAndUpdate(
       { _id: userId },
-      { $push: { addresses: { address } } }
-    ).exec((err, docs) => {
-      res.send(docs);
-    });
+      {
+        $push: { addresses: { address } },
+      },
+      (err, docs) => {
+        if (err) res.send(err);
+        res.send(docs);
+      }
+    );
+    // .exec((err, docs) => {
+    //   if (err) res.send(err);
+    //   res.send(docs);
+    // });
+  } catch (error) {
+    console.log(error.name);
+    res.send("Error occured").status(500);
+  }
+});
+
+router.put("/updateAddress", async (req, res) => {
+  try {
+    if (!req.body) return;
+    const { userId, addressId, address, deleteAddress } = req.body;
+    if (deleteAddress === true) {
+    } else {
+      [
+        {
+          $match: {
+            _id: new ObjectId("632067519ced82c8442a369e"),
+          },
+        },
+        {
+          $unwind: {
+            path: "$addresses",
+          },
+        },
+        {
+          $match: {
+            "addresses._id": new ObjectId("63206b8eeeb48f1c02b62054"),
+          },
+        },
+        {
+          $set: {
+            "addresses.address": "expression",
+          },
+        },
+      ];
+    }
   } catch (error) {
     console.log(error.name);
     res.send("Error occured").status(500);
