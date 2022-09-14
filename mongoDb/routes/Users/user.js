@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
 const { User, Salary } = require("../../models/index");
 
 router.post("/addUser", async (req, res) => {
@@ -55,33 +56,33 @@ router.put("/updateAddress", async (req, res) => {
   try {
     if (!req.body) return;
     const { userId, addressId, address, deleteAddress } = req.body;
-    if (deleteAddress === true) {
-    } else {
-      [
-        {
-          $match: {
-            _id: new ObjectId("632067519ced82c8442a369e"),
-          },
+    var pipeline = [
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(userId),
         },
-        {
-          $unwind: {
-            path: "$addresses",
-          },
+      },
+      {
+        $unwind: {
+          path: "$addresses",
         },
-        {
-          $match: {
-            "addresses._id": new ObjectId("63206b8eeeb48f1c02b62054"),
-          },
+      },
+      {
+        $match: {
+          "addresses._id": mongoose.Types.ObjectId(addressId),
         },
-        {
-          $set: {
-            "addresses.address": "expression",
-          },
+      },
+      {
+        $set: {
+          "addresses.address": address,
         },
-      ];
-    }
+      },
+    ];
+    User.aggregate(pipeline).exec((err, docs) => {
+      res.send(docs);
+    });
   } catch (error) {
-    console.log(error.name);
+    console.log(error);
     res.send("Error occured").status(500);
   }
 });
