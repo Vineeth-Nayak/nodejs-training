@@ -56,32 +56,6 @@ router.put("/updateAddress", async (req, res) => {
   try {
     if (!req.body) return;
     const { addressId, address, deleteAddress } = req.body;
-    // var pipeline = [
-    //   {
-    //     $match: {
-    //       _id: mongoose.Types.ObjectId(userId),
-    //     },
-    //   },
-    //   {
-    //     $unwind: {
-    //       path: "$addresses",
-    //     },
-    //   },
-    //   {
-    //     $match: {
-    //       "addresses._id": mongoose.Types.ObjectId(addressId),
-    //     },
-    //   },
-    //   {
-    //     $set: {
-    //       "addresses.address": address,
-    //     },
-    //   },
-    // ];
-    // User.aggregate(pipeline).exec((err, docs) => {
-    //   if (err) res.send(err);
-    //   else res.send(docs);
-    // });
 
     // ! search for addresses and addressId  $: to access nested objects -> address
     if (deleteAddress == true) {
@@ -235,4 +209,5 @@ router.get("/aggregateExample", async (req, res) => {
     res.send("error occured").status(500);
   }
 });
+
 module.exports = router;
