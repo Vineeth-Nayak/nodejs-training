@@ -18,7 +18,7 @@ app.use("/", router);
 app.use("/api/user", userRouter);
 
 app.get("/", (req, res) => {
-  res.send("HLE");
+  res.send("Hello preetham");
 });
 
 app.listen(port, () => console.log("Running port", port));

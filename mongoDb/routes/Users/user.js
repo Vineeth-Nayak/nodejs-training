@@ -55,32 +55,50 @@ router.put("/addAddress", async (req, res) => {
 router.put("/updateAddress", async (req, res) => {
   try {
     if (!req.body) return;
-    const { userId, addressId, address, deleteAddress } = req.body;
-    var pipeline = [
-      {
-        $match: {
-          _id: mongoose.Types.ObjectId(userId),
-        },
-      },
-      {
-        $unwind: {
-          path: "$addresses",
-        },
-      },
-      {
-        $match: {
-          "addresses._id": mongoose.Types.ObjectId(addressId),
-        },
-      },
-      {
-        $set: {
-          "addresses.address": address,
-        },
-      },
-    ];
-    User.aggregate(pipeline).exec((err, docs) => {
-      res.send(docs);
-    });
+    const { addressId, address, deleteAddress } = req.body;
+    // var pipeline = [
+    //   {
+    //     $match: {
+    //       _id: mongoose.Types.ObjectId(userId),
+    //     },
+    //   },
+    //   {
+    //     $unwind: {
+    //       path: "$addresses",
+    //     },
+    //   },
+    //   {
+    //     $match: {
+    //       "addresses._id": mongoose.Types.ObjectId(addressId),
+    //     },
+    //   },
+    //   {
+    //     $set: {
+    //       "addresses.address": address,
+    //     },
+    //   },
+    // ];
+    // User.aggregate(pipeline).exec((err, docs) => {
+    //   if (err) res.send(err);
+    //   else res.send(docs);
+    // });
+
+    // ! search for addresses and addressId  $: to access nested objects -> address
+    if (deleteAddress == true) {
+      User.findOneAndDelete({ "addresses._id": addressId }).exec(
+        (err, docs) => {
+          console.log(err);
+          res.send(docs);
+        }
+      );
+    } else {
+      User.updateOne(
+        { "addresses._id": addressId },
+        { "addresses.$.address": address }
+      ).exec((err, docs) => {
+        res.send(docs);
+      });
+    }
   } catch (error) {
     console.log(error);
     res.send("Error occured").status(500);
