@@ -107,15 +107,20 @@ router.put("/update", async (req, res) => {
   }
 });
 
-router.delete("/deleteRecord", async (req, res) => {
+router.delete("/deleteAddress", async (req, res) => {
   try {
     if (!req.body) res.send("Send Body");
-    const { _id } = req.body;
+    const { userId, addressId } = req.body;
 
-    User.findByIdAndDelete({ _id }, (err, docs) => {
-      if (err) res.send(err.name);
-      res.send(docs);
-    });
+    User.findByIdAndUpdate(
+      { _id: userId },
+      { $pull: { addresses: { _id: addressId } } },
+      { new: true },
+      (err, docs) => {
+        if (err) res.send(err.name);
+        res.send(docs);
+      }
+    );
   } catch (error) {
     console.log("deleteRecord", error.name);
     res.send("error occured").status(500);
