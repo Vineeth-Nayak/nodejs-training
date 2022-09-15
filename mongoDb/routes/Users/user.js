@@ -202,7 +202,34 @@ router.get("/salary", async (req, res) => {
 router.get("/aggregateExample", async (req, res) => {
   try {
     if (!req.body) res.send("Send Body");
-    // const {}
+    const { userId, addressId, address } = req.body;
+    var pipeline = [
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $unwind: {
+          path: "$addresses",
+        },
+      },
+      {
+        $match: {
+          "addresses._id": mongoose.Types.ObjectId(addressId),
+        },
+      },
+      {
+        $set: {
+          "addresses.address": address,
+        },
+      },
+    ];
+
+    User.aggregate(pipeline).exec((err, docs) => {
+      if (err) res.send(err);
+      else res.send(docs);
+    });
   } catch (error) {
     console.log("creditSalary", error);
     res.send("error occured").status(500);
