@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const port = process.env.PORT | 5000;
+require("dotenv").config();
 
 // db Connection
 const databaseConnect = require("./config/dbConn");

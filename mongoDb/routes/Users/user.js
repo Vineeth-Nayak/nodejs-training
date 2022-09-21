@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const { User, Salary } = require("../../models/index");
+const jwt = require("jsonwebtoken");
+const verifyToken = require("../../middleware/verifyToken");
 
 router.post("/addUser", async (req, res) => {
   try {
@@ -211,6 +213,45 @@ router.get("/aggregateExample", async (req, res) => {
     });
   } catch (error) {
     console.log("creditSalary", error);
+    res.send("error occured").status(500);
+  }
+});
+
+// ! login
+router.post("/login", (req, res) => {
+  try {
+    const { email, password } = req.body;
+    User.findOne({ email, password }, (err, docs) => {
+      if (err) res.send(err);
+      if (docs) {
+        const accessToken = jwt.sign(
+          { email: docs.email, userId: docs._id },
+          process.env.ACCESS_TOKEN_SECRET
+          // { expiresIn: "1h" }
+        );
+        // const refreshToken = jwt.sign(
+        //   { email: docs.email, userId: docs._id },
+        //   process.env.REFRESH_TOKEN_SECRET,
+        //   { expiresIn: "1d" }
+        // );
+        res.header("auth-token", accessToken);
+
+        res.json({ msg: "User found", docs });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("error occured").status(500);
+  }
+});
+
+//! testing jwt
+router.get("/testJWT", verifyToken, (req, res) => {
+  try {
+    // const { email, password } = req.body;
+    res.json({ msg: "Nibba" });
+  } catch (error) {
+    console.log(error);
     res.send("error occured").status(500);
   }
 });

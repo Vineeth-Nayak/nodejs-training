@@ -20,5 +20,10 @@
   "homepage": "https://github.com/Vineeth-Nayak/nodejs-training#readme",
   "devDependencies": {
     "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.2",
+    "jsonwebtoken": "^8.5.1"
   }
 }
