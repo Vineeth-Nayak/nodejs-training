@@ -249,7 +249,7 @@ router.post("/login", (req, res) => {
 router.get("/testJWT", verifyToken, (req, res) => {
   try {
     // const { email, password } = req.body;
-    res.json({ msg: "Nibba" });
+    res.json({ msg: "Nibba", user: req.user });
   } catch (error) {
     console.log(error);
     res.send("error occured").status(500);
